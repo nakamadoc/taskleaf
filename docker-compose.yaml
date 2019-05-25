@@ -1,0 +1,26 @@
+version: '3'
+
+services:
+  db:
+    image: postgres:11.2-alpine
+    environment:
+      - POSTGRES_PASSWORD=taskleaf
+      - POSTGRES_USER=taskleaf
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    restart: always
+  app:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - 3000:3000
+    volumes:
+      # - ./:/usr/src/app
+      - /rails/taskleaf:/usr/src/app
+    command: rails server -b 0.0.0.0
+    # command: bash
+    # tty: true
+
+volumes:
+  pgdata:
